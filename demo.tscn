@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://polygonalLabel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://vertice.gd" type="Script" id=2]
+[ext_resource path="res://dynamicfont.tres" type="DynamicFont" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends VSlider
+
+func _ready():
+	connect(\"value_changed\", self, \"_on_value_changed\")
+
+func _on_value_changed(value:float):
+	var lab = $\"../polygonalLabel\"
+	lab.font.size = value
+	lab.update()
+	lab = $\"../polygonalLabel2\"
+	lab.update()
+"
+
+[node name="demo" type="Node2D"]
+
+[node name="polygonalLabel" parent="." instance=ExtResource( 1 )]
+position = Vector2( 173.833, 81.2337 )
+font = ExtResource( 3 )
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit."
+
+[node name="vertice" type="Node2D" parent="polygonalLabel"]
+position = Vector2( 41.3238, 33.059 )
+script = ExtResource( 2 )
+
+[node name="vertice2" type="Node2D" parent="polygonalLabel"]
+position = Vector2( -87.4677, 133.17 )
+script = ExtResource( 2 )
+
+[node name="vertice3" type="Node2D" parent="polygonalLabel"]
+position = Vector2( 45.9207, 473.643 )
+script = ExtResource( 2 )
+
+[node name="vertice4" type="Node2D" parent="polygonalLabel"]
+position = Vector2( 450.627, 255.916 )
+script = ExtResource( 2 )
+
+[node name="vertice5" type="Node2D" parent="polygonalLabel"]
+position = Vector2( 155.955, 181.381 )
+script = ExtResource( 2 )
+
+[node name="vertice6" type="Node2D" parent="polygonalLabel"]
+position = Vector2( 354.822, 51.3462 )
+script = ExtResource( 2 )
+
+[node name="VSlider" type="VSlider" parent="."]
+margin_right = 16.0
+margin_bottom = 351.0
+min_value = 6.0
+max_value = 50.0
+value = 16.0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="polygonalLabel2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 749.337, 143.256 )
+font = ExtResource( 3 )
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit."
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="polygonalLabel2"]
+polygon = PoolVector2Array( -37.5829, 30.7438, 190.173, 17.2804, 231.685, 255.133, 150.904, 312.353, 205.049, 432.94, 61.1486, 429.035, -215.376, 371.791, 27.4901, 200.158, -64.5097, 113.768 )

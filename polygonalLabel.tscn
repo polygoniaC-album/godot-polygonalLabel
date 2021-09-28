@@ -1,0 +1,129 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "tool
+
+extends Node2D
+
+var yPas:float = 5
+var strings = []
+
+export(Font) var font:Font
+
+export(String, MULTILINE) var text:String = \"\" setget set_text
+export(String) var translation_id:String = \"\"
+
+func _ready():
+	update()
+
+func update():
+	if !font:
+		return
+	yPas = font.get_string_size(\"e\").y
+	if \"extra_spacing_font\" in font:
+		yPas += font.extra_spacing_top
+	if \"extra_spacing_bottom\" in font:
+		yPas += font.extra_spacing_bottom
+	var polygon = make_polygon()
+	if polygon.size() > 0:
+		cut_string(liste_segment(polygon))
+	else:
+		strings = []
+	.update()
+
+func make_polygon():
+	var polygon:PoolVector2Array = PoolVector2Array([])
+	for child in get_children():
+		if child is CollisionPolygon2D and child.polygon.size() > 0:
+			return child.polygon
+		polygon.append(child.position)
+	return polygon
+
+func liste_segment(polygon:PoolVector2Array):
+	var segments = []
+	var points = {}
+	
+	var yMax = -INF
+	var yMin = INF
+	for s in polygon:
+		yMax = max(yMax, s.y)
+		yMin = min(yMin, s.y)
+	var y = yMin
+	
+	while(y < yMax):
+		for i in range(polygon.size()):
+			var A:Vector2 = polygon[i]
+			var B:Vector2
+			if i == polygon.size() - 1:
+				B = polygon[0]
+			else:
+				B = polygon[i + 1]
+			#need A.y <= y < B.y
+			if A.y > B.y:
+				var C:Vector2 = B
+				B = A
+				A = C
+			elif A.y == B.y:
+				continue
+			if A.y <= y && y < B.y:
+				if !y in points:
+					points[y] = []
+				var x = (B.x - A.x) * (y - A.y) / (B.y - A.y) + A.x
+				points[y].append(x)
+		y = y + yPas
+	
+	for y in points:
+		assert(points[y].size() % 2 == 0)
+		points[y].sort()
+		for i in range(points[y].size() / 2):
+			var A:Vector2 = Vector2(points[y][2 * i], y)
+			var B:Vector2 = Vector2(points[y][2 * i + 1], y)
+			if A.x > B.x:
+				var C = A
+				A = B
+				B = C
+			elif A.x == B.x:
+				continue
+			segments.append([A, B])
+	return segments
+
+func cut_string(segments):
+	var translation = TranslationServer.translate(translation_id)
+	if translation != translation_id:
+		pass
+	var st = text
+	strings = []
+	for seg in segments:
+		var l = seg[1].x - seg[0].x
+		var i:int = 1
+		while i < st.length() and font.get_string_size(st.substr(0, i + 1)).x < l:
+			i += 1
+		i = st.substr(0, i).find_last(' ')
+		if i == -1:
+			continue
+		strings.append([seg[0], st.substr(0, i)])
+		st = st.substr(i)
+
+func _draw():
+#	for s in segments:
+#		draw_circle(s[0], 5, Color.black)
+#		draw_circle(s[1], 5, Color.black)
+#		draw_line(s[0], s[1], Color.black)
+
+#	for y in points:
+#		for x in points[y]:
+#			draw_circle(Vector2(x, y), 2, Color.white)
+
+	for s in strings:
+		draw_string(font, s[0], s[1])
+
+func set_text(value):
+	text = value
+	update()
+"
+
+[node name="polygonalLabel" type="Node2D"]
+script = SubResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
