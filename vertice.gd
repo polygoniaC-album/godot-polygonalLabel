@@ -21,12 +21,9 @@ func _process(delta):
 			get_parent().update()
 
 func _input(event):
-	print('i')
 	if event is InputEventMouseButton:
 		if event.pressed:
-			print('p')
 			if global_position.distance_squared_to(get_global_mouse_position()) <= r * r:
-				print('t')
 				dnd = true
 				get_tree().set_input_as_handled()
 		else:

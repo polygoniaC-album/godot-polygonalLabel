@@ -72,12 +72,12 @@ func liste_segment(polygon:PoolVector2Array):
 				points[y].append(x)
 		y = y + yPas
 	
-	for y in points:
-		assert(points[y].size() % 2 == 0)
-		points[y].sort()
-		for i in range(points[y].size() / 2):
-			var A:Vector2 = Vector2(points[y][2 * i], y)
-			var B:Vector2 = Vector2(points[y][2 * i + 1], y)
+	for yp in points:
+		assert(points[yp].size() % 2 == 0)
+		points[yp].sort()
+		for i in range(points[yp].size() / 2):
+			var A:Vector2 = Vector2(points[yp][2 * i], yp)
+			var B:Vector2 = Vector2(points[yp][2 * i + 1], yp)
 			if A.x > B.x:
 				var C = A
 				A = B

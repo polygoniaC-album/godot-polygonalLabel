@@ -16,5 +16,5 @@ _global_script_class_icons={
 [application]
 
 config/name="polygonalLabel"
-run/main_scene="res://polygonalLabel.tscn"
+run/main_scene="res://demo.tscn"
 config/icon="res://icon.png"
